@@ -3,10 +3,17 @@ const getRandomColor = () => {
   return colors[Math.floor(Math.random() * colors.length)];
 };
 
-export const Skill = ({ name }) => {
+const levelToEmoji = {
+  Beginner: " 👶",
+  Intermediate: " 🧙‍♀️",
+  Advanced: " 🧙‍♂️",
+};
+
+export const Skill = ({ name, level }) => {
   return (
     <div className="skill" style={{ backgroundColor: getRandomColor() }}>
       <p>{name}</p>
+      <p>{levelToEmoji[level]}</p>
     </div>
   );
 };
