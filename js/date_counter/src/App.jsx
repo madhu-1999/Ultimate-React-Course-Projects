@@ -4,36 +4,51 @@ import "./index.css";
 function App() {
   const [step, setstep] = useState(1);
   const [count, setcount] = useState(0);
+  const [hasChanged, sethasChanged] = useState(false);
   const date = new Date();
   date.setDate(date.getDate() + count);
 
   const incrementCount = () => {
-    setcount((count) => count + step);
+    setcount((count) => {
+      const newCount = count + step;
+      sethasChanged(!(newCount === 0 && step === 1));
+      return newCount;
+    });
   };
 
   const decrementCount = () => {
-    setcount((count) => count - step);
+    setcount((count) => {
+      const newCount = count - step;
+      sethasChanged(!(newCount === 0 && step === 1));
+      return newCount;
+    });
   };
 
-  const incrementStep = () => {
-    setstep((step) => step + 1);
+  const handleReset = () => {
+    setcount(0);
+    sethasChanged(false);
+    setstep(1);
   };
 
-  const decrementStep = () => {
-    if (step > 1) {
-      setstep((step) => step - 1);
-    }
-  };
   return (
     <div className="App">
       <div>
-        <button onClick={decrementStep}>-</button>
-        <span>Step:{step}</span>
-        <button onClick={incrementStep}>+</button>
+        <input
+          type="range"
+          min="1"
+          max="10"
+          value={step}
+          onChange={(e) => setstep(Number(e.target.value))}
+        ></input>
+        <span>{step}</span>
       </div>
       <div>
         <button onClick={decrementCount}>-</button>
-        <span>Count:{count}</span>
+        <input
+          type="number"
+          value={count}
+          onChange={(e) => setcount(Number(e.target.value))}
+        />
         <button onClick={incrementCount}>+</button>
       </div>
       <p>
@@ -46,6 +61,12 @@ function App() {
         </span>
         <span>{date.toDateString()}</span>
       </p>
+      <button
+        className={!hasChanged ? "hidden-button" : ""}
+        onClick={handleReset}
+      >
+        Reset
+      </button>
     </div>
   );
 }
