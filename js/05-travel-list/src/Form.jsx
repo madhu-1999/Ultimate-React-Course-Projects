@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export const Form = () => {
+export const Form = ({ addItem }) => {
   const itemCounts = [...Array(20).keys()].map((i) => i + 1);
   const [description, setDescription] = useState("");
   const [quantity, setQuantity] = useState(1);
@@ -10,6 +10,7 @@ export const Form = () => {
     if (!description) return;
     const newItem = { description, quantity, packed: false, id: Date.now() };
     console.log(newItem);
+    addItem(newItem);
     setDescription("");
     setQuantity(1);
   };
