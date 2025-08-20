@@ -1,0 +1,44 @@
+@import "tailwindcss";
+body {
+  height: 100vh;
+}
+.main-container {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.friend-container {
+  display: flex;
+  flex-direction: column;
+}
+.add-form {
+  @apply bg-orange-200 p-4 rounded flex flex-col gap-4;
+}
+.split-form {
+  @apply bg-orange-100 p-4 rounded flex flex-col gap-4;
+}
+form label {
+  @apply block text-sm font-medium text-gray-700 mb-1;
+  margin-bottom: 0;
+  min-width: 120px;
+}
+.inline-group input {
+  @apply border focus:border-orange-300 focus:outline-none focus:border-2;
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
+  background-color: #fffff9;
+}
+.inline-group {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.button {
+  @apply bg-orange-400 text-black font-bold py-2 px-4 rounded;
+}
