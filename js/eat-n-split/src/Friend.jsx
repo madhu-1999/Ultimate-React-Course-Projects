@@ -14,7 +14,17 @@ export const Friend = ({ friend, focus, onFocus }) => {
       </div>
       <div className="flex flex-col p-4 items-start grow">
         <h3 className="font-bold">{friend.friendName}</h3>
-        <p className="text-xs">You and {friend.friendName} are even</p>
+        {friend.owedByMe === 0 ? (
+          <p className="text-xs">You and {friend.friendName} are even</p>
+        ) : friend.owedByMe > 0 ? (
+          <p className="text-xs text-red-400">
+            You owe {friend.friendName} ${friend.owedByMe}
+          </p>
+        ) : (
+          <p className="text-xs text-green-500">
+            {friend.friendName} owes you ${-friend.owedByMe}
+          </p>
+        )}
       </div>
       <Button isHidden={false} onClick={showSplitBill} type="button">
         {focus ? "Close" : "Select"}

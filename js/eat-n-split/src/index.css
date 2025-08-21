@@ -25,8 +25,9 @@ form label {
   margin-bottom: 0;
   min-width: 120px;
 }
-.inline-group input {
-  @apply border focus:border-orange-300 focus:outline-none focus:border-2;
+.inline-group input,
+.inline-group select {
+  @apply border focus:border-orange-300 focus:outline-none focus:border-2 w-48 h-10 px-3 bg-white;
   padding-top: 0.2rem;
   padding-bottom: 0.2rem;
   background-color: #fffff9;

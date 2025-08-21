@@ -11,6 +11,13 @@ export default function App() {
     setFriends((friends) => [...friends, friend]);
   };
 
+  const updateFriend = (id, newProperty, newValue) => {
+    setFriends((prevFriends) =>
+      prevFriends.map((friend) =>
+        friend.id === id ? { ...friend, [newProperty]: newValue } : friend
+      )
+    );
+  };
   return (
     <div className="main-container">
       <div className="friend-container">
@@ -21,7 +28,11 @@ export default function App() {
         />
         <FriendForm addToFriends={addFriend} />
       </div>
-      <SplitBillForm currFriend={currFriend} friends={friends} />
+      <SplitBillForm
+        currFriend={currFriend}
+        friends={friends}
+        setOwedByMe={updateFriend}
+      />
     </div>
   );
 }

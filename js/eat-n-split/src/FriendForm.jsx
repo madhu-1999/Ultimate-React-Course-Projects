@@ -10,6 +10,7 @@ export const FriendForm = ({ addToFriends }) => {
       id: Date.now(),
       friendName,
       img: img || "https://i.pravatar.cc/150?img=68",
+      owedByMe: 0,
     };
     e.preventDefault();
     console.log(newFriend);
