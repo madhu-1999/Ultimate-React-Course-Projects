@@ -32,6 +32,7 @@ export default function App() {
         currFriend={currFriend}
         friends={friends}
         setOwedByMe={updateFriend}
+        key={currFriend}
       />
     </div>
   );
