@@ -17,6 +17,7 @@ export const StarRating = ({
   className = "",
   messages = [],
   defaultRating = 0,
+  onSetRating = (rating) => {},
 }) => {
   const [rating, setRating] = useState(defaultRating);
   const [tempRating, setTempRating] = useState(0);
@@ -34,7 +35,10 @@ export const StarRating = ({
         {Array.from({ length: maxRating }, (_, i) => (
           <Star
             key={i}
-            onRate={() => setRating(i + 1)}
+            onRate={() => {
+              setRating(i + 1);
+              onSetRating(i + 1);
+            }}
             full={tempRating ? tempRating >= i + 1 : rating >= i + 1}
             onHoverIn={() => setTempRating(i + 1)}
             onHoverOut={() => setTempRating(0)}
