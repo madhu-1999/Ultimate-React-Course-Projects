@@ -4,6 +4,7 @@ import { WatchedMovieList } from "./WatchedMovieList";
 import { WatchedSummary } from "./WatchedSummary";
 import { MovieList } from "./MovieList";
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const VITE_OMDB_API_KEY = import.meta.env.VITE_OMDB_API_KEY;
 
 export default function App() {

@@ -1,3 +1,4 @@
+// eslint-disable-next-line react-refresh/only-export-components
 export const average = (arr) =>
   arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
 
