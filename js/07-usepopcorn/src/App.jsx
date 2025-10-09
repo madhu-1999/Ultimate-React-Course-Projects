@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { MovieDetails } from "./MovieDetails";
 import { WatchedMovieList } from "./WatchedMovieList";
 import { WatchedSummary } from "./WatchedSummary";
@@ -164,6 +164,20 @@ export const Logo = () => {
   );
 };
 export const Search = ({ query, onQuery }) => {
+  const searchbar = useRef(null);
+
+  useEffect(() => {
+    const callback = (e) => {
+      if (document.activeElement === searchbar.current) return;
+      if (e.code === "Enter") {
+        searchbar.current.focus();
+        onQuery("");
+      }
+    };
+
+    return () => document.addEventListener("keydown", callback);
+  }, [onQuery]);
+
   return (
     <input
       className="search"
@@ -171,6 +185,7 @@ export const Search = ({ query, onQuery }) => {
       placeholder="Search movies..."
       value={query}
       onChange={(e) => onQuery(e.target.value)}
+      ref={searchbar}
     />
   );
 };

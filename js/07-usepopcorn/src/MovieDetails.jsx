@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { VITE_OMDB_API_KEY, Loader } from "./App";
 import { StarRating } from "./StarRating";
 
@@ -26,6 +26,8 @@ export const MovieDetails = ({
 
   const watchedIds = watched.map((movie) => movie.imdbID);
   const isWatched = watchedIds.includes(selectedId);
+  const countRef = useRef(0);
+
   const handleAdd = () => {
     const newWatchedMovie = {
       imdbID: selectedId,
@@ -35,10 +37,12 @@ export const MovieDetails = ({
       imdbRating: Number(imdbRating),
       runtime: Number(runtime.split(" ").at(0)),
       userRating,
+      countRatingDecisions: countRef.current,
     };
     onAddWatched(newWatchedMovie);
     onCloseHandle();
   };
+
   useEffect(() => {
     async function getMovieDetails() {
       setIsLoading(true);
@@ -72,6 +76,11 @@ export const MovieDetails = ({
       document.removeEventListener("keydown", callback);
     };
   }, [onCloseHandle]);
+
+  useEffect(() => {
+    if (userRating) countRef.current = countRef.current + 1;
+  }, [userRating]);
+
   return (
     <div className="details">
       <button className="btn-back" onClick={onCloseHandle}>
