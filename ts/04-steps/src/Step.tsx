@@ -32,7 +32,7 @@ export const Step = () => {
       {isOpen && (
         <div className="steps">
           <div className="numbers">
-            {messages.map((message, index) => (
+            {messages.map((_message, index) => (
               <div key={index} className={step >= index + 1 ? "active" : ""}>
                 {index + 1}
               </div>
