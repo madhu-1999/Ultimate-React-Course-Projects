@@ -1,20 +1,17 @@
-import { useEffect, useState, useRef } from "react";
+import { useState, useRef } from "react";
 import { MovieDetails } from "./MovieDetails";
 import { WatchedMovieList } from "./WatchedMovieList";
 import { WatchedSummary } from "./WatchedSummary";
 import { MovieList } from "./MovieList";
+import { useMovies } from "./useMoveis";
+import { useLocalStorageState } from "./useLocalStorageState";
+import { useKey } from "./useKey";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const VITE_OMDB_API_KEY = import.meta.env.VITE_OMDB_API_KEY;
 
 export default function App() {
-  const [movies, setMovies] = useState([]);
-  const [watched, setWatched] = useState(() => {
-    const storedValue = localStorage.getItem("watched");
-    return JSON.parse(storedValue) ?? [];
-  });
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [watched, setWatched] = useLocalStorageState([], "watched");
   const [query, setQuery] = useState("");
   const [selectedId, setSelectedId] = useState(null);
 
@@ -34,48 +31,7 @@ export default function App() {
     setWatched((watched) => watched.filter((movie) => movie.imdbID !== id));
   };
 
-  useEffect(() => {
-    localStorage.setItem("watched", JSON.stringify(watched));
-  }, [watched]);
-
-  useEffect(() => {
-    const controller = new AbortController();
-    async function fetchMovies() {
-      try {
-        setIsLoading(true);
-        setError("");
-        const res = await fetch(
-          `http://www.omdbapi.com/?apikey=${VITE_OMDB_API_KEY}&s=${query}`,
-          { signal: controller.signal }
-        );
-        if (!res.ok) {
-          throw new Error("Something went wrong!");
-        }
-        const data = await res.json();
-
-        if (data.Response === "False") throw new Error("Movie not found!");
-        setMovies(data.Search);
-      } catch (error) {
-        if (error.name !== "AbortError") {
-          setError(error.message);
-        }
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    if (query.length < 3) {
-      setMovies([]);
-      setError("");
-      return;
-    }
-    handleCloseMovie();
-    fetchMovies();
-
-    return () => {
-      controller.abort();
-    };
-  }, [query]);
-
+  const { movies, isLoading, error } = useMovies(query, handleCloseMovie);
   return (
     <>
       <NavBar>
@@ -165,18 +121,11 @@ export const Logo = () => {
 };
 export const Search = ({ query, onQuery }) => {
   const searchbar = useRef(null);
-
-  useEffect(() => {
-    const callback = (e) => {
-      if (document.activeElement === searchbar.current) return;
-      if (e.code === "Enter") {
-        searchbar.current.focus();
-        onQuery("");
-      }
-    };
-
-    return () => document.addEventListener("keydown", callback);
-  }, [onQuery]);
+  useKey("Enter", () => {
+    if (document.activeElement === searchbar.current) return;
+    searchbar.current.focus();
+    onQuery("");
+  });
 
   return (
     <input

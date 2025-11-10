@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { VITE_OMDB_API_KEY, Loader } from "./App";
 import { StarRating } from "./StarRating";
+import { useKey } from "./useKey";
 
 export const MovieDetails = ({
   selectedId,
@@ -65,17 +66,7 @@ export const MovieDetails = ({
     };
   }, [title]);
 
-  useEffect(() => {
-    const callback = (e) => {
-      if (e.code === "Escape") {
-        onCloseHandle();
-      }
-    };
-    document.addEventListener("keydown", callback);
-    return () => {
-      document.removeEventListener("keydown", callback);
-    };
-  }, [onCloseHandle]);
+  useKey("Escape", onCloseHandle);
 
   useEffect(() => {
     if (userRating) countRef.current = countRef.current + 1;
